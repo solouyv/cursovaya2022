@@ -1,0 +1,102 @@
+version: "3.4"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./etc/api/Dockerfile
+      cache_from:
+        - "exchange-api:latest"
+    env_file:
+      - ./etc/api/env/.dev.env
+    depends_on:
+      - postgres
+      - migrator
+      - fixtures
+    networks:
+      - network
+    ports:
+      - '80:8000'
+    volumes:
+      - ./src/exchange:/app/exchange
+      - ./src/templates:/app/templates
+      - ./src/static:/app/static
+      - ./src/tests:/app/tests
+      - ./src/poetry.lock:/app/poetry.lock
+      - ./src/pyproject.toml:/app/pyproject.toml
+      - ./src/setup.cfg:/app/setup.cfg
+    stdin_open: true
+    tty: true
+
+  fixtures:
+    build:
+      context: .
+      dockerfile: ./etc/migrator/Dockerfile
+      cache_from:
+        - "exchange-migrator:latest"
+    env_file: ./etc/migrator/env/.dev.env
+    depends_on:
+      - postgres
+      - migrator
+    environment:
+      - MASTER_CHANGELOG=./fixtures/master.yaml
+    networks:
+      - network
+
+  migrator:
+    build:
+      context: .
+      dockerfile: ./etc/migrator/Dockerfile
+      cache_from:
+        - "exchange-migrator:latest"
+    env_file: ./etc/migrator/env/.dev.env
+    depends_on:
+      - postgres
+    environment:
+      - MASTER_CHANGELOG=./migrations/master.yaml
+    networks:
+      - network
+    volumes:
+      - ./etc/migrator/migrations:/app/migrations
+
+  postgres:
+    command: postgres
+      -c 'max_connections=20'
+      -c 'shared_buffers=128MB'
+      -c 'effective_cache_size=384MB'
+      -c 'maintenance_work_mem=32MB'
+      -c 'checkpoint_completion_target=0.7'
+      -c 'wal_buffers=3932kB'
+      -c 'default_statistics_target=100'
+      -c 'random_page_cost=1.1'
+      -c 'effective_io_concurrency=200'
+      -c 'work_mem=6553kB'
+      -c 'min_wal_size=1GB'
+      -c 'max_wal_size=4GB'
+      -c 'max_worker_processes=2'
+      -c 'max_parallel_workers_per_gather=1'
+      -c 'max_parallel_workers=2'
+      -c 'max_parallel_maintenance_workers=1'
+    restart: 'no'
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=exchange
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres-password
+    networks:
+      - network
+    ports:
+      - 5432:5432
+#    volumes:
+#      - postgres:/var/lib/postgresql/data
+
+
+networks:
+  network:
+    external:
+      name: network
+
+
+#volumes:
+#  postgres:

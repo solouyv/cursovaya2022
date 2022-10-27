@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Monthly report</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-accountant">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-25">
+        <div class="row g-5">
+          {% if tables %}
+            <div class="col-sm">
+              <span class="input-group-text" id="basic-addon1">{{ tables[0][4] }}</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <table class="table">
+          <tr>
+            <th>Currency</th>
+            <th>Purchase</th>
+            <th>Sale</th>
+          </tr>
+          {% for row in tables %}
+            <tr>
+              <td>{{ row[0] }}</td>
+              <td>{{ row[1] }}</td>
+              <td>{{ row[2] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+

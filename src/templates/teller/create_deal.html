@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Create deal</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-teller">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-teller text-white" style="border-radius: 0.5rem; width: 70rem;">
+          <div class="card-body p-4 text-center">
+
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <form method="post" action="/teller/add-client">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Client id</span>
+                          <input type="text" class="form-control" name="customer_id" value="{{ customer_data["id"] }}"
+                                 aria-label="" required>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">First name</span>
+                          <input type="text" class="form-control" name="customer_first_name" value="{{ customer_data["first_name"] }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Last name</span>
+                          <input type="text" class="form-control" name="customer_last_name" value="{{ customer_data["last_name"] }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Choose currency for purchasing</span>
+                          <select class="form-select" name="currency_for_purchasing" aria-label="" required>
+                            {% for c in daily_currency_rate_view %}
+                              <option value="{{ daily_currency_rate_view[c]["id"] }}">{{ c }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Choose currency for sale</span>
+                          <select class="form-select" name="currency_for_sale" aria-label="" required>
+                            {% for c in daily_currency_rate_view %}
+                              <option value="{{ daily_currency_rate_view[c]["id"] }}">{{ c }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4" style="width: 30rem">
+                          <span class="input-group-text" id="basic-addon1">Currency amount for purchasing</span>
+                          <input type="text" class="form-control" name="currency_amount" aria-label="" required>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3" formmethod="post" formaction="/teller/save-deal" style="width: 10rem">Create deal</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

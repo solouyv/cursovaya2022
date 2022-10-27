@@ -1,0 +1,11 @@
+id,first_name,last_name,email,has_salary_increase,password,role_id,level_id
+1,Jogn,Doe,doe@exchange.by,true,password,1,4
+2,Cameron,Diaz,diaz@exchange.by,true,password,2,2
+3,Keira,Knightley,knightley@exchange.by,true,password,3,3
+4,Arnold,Schweizeneger,schweizenege@exchange.by,true,password,3,2
+5,Pamela,Anderson,anderson@exchange.by,true,password,2,1
+6,John,Rambo,rambo@exchange.by,true,password,3,3
+7,George,Bush,bush@exchange.by,true,password,2,2
+8,Kim,Chen In,chen_in@exchange.by,true,password,2,1
+9,Rantaro,Gandhi,gandhi@exchange.by,true,password,3,3
+10,Steven,Spielberg,spielberg@exchange.by,true,password,3,1

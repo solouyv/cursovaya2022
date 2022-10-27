@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Raman Salauyou
+      changes:
+        - addUniqueConstraint:
+            constraintName: unique_user_email
+            columnNames: email
+            tableName: User
+
+  - changeSet:
+      id: 2
+      author: Raman Salauyou
+      changes:
+        - addUniqueConstraint:
+            constraintName: unique_customer
+            columnNames: first_name, last_name, passport_id
+            tableName: Customer

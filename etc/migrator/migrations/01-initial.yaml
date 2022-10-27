@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Raman Salauyou
+      changes:
+        - sqlFile:
+            path: ./migrations/rawsql/PostgreSQL.sql
+            relativeToChangelogFile: false
