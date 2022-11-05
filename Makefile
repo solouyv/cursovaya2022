@@ -13,6 +13,7 @@ prereq-tests: | prereq
 .PHONY: run
 ## Run service
 run: | prereq
+	docker-compose up -d postgres
 	docker-compose up -d
 
 .PHONY: stop

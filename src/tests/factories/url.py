@@ -1,5 +1,4 @@
 from factory import Factory, Faker
-
 from short_url.domain.entities import Url
 
 

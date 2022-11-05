@@ -1,8 +1,8 @@
 import pytest
 from pytest_factoryboy import register
+from short_url.fastapi_app import create_fastapi
 from starlette.testclient import TestClient
 
-from short_url.fastapi_app import create_fastapi
 from tests.factories.url import UrlFactory
 
 

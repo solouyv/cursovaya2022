@@ -1,12 +1,19 @@
 import uuid
 from decimal import Decimal
-from typing import Optional, Any
+from typing import Any, Optional
 
-from fastapi import Request
 from dependency_injector.wiring import Provide, inject
+from fastapi import Request
+from sqlalchemy import select, func
 
 from exchange.containers import Application
 from exchange.datasource import Database
+from exchange.infrastructure.tables import customer_table
+from exchange.infrastructure.views import (
+    byn_currency_view,
+    card_ids_view,
+    daily_currency_rate_view, deal_data_view,
+)
 
 
 class AddCustomerForm:
@@ -35,10 +42,7 @@ class AddCustomerForm:
         try:
             with db.connection() as conn:
                 conn.execute(
-                    (
-                        f"insert into \"Customer\"(first_name, last_name, passport_id, bank_card_id)"
-                        f" values('{self.first_name}', '{self.last_name}', '{self.passport_id}', '{bank_card_id}');"
-                    )
+                    f"call add_customer('{self.first_name}', '{self.last_name}', '{self.passport_id}', '{bank_card_id}');"
                 )
             self.msg.append("Customer added")
         except Exception:
@@ -56,7 +60,7 @@ class GetPassportIdsForm:
     def get(self, db: Database = Provide[Application.datasources.postgres]):
         try:
             with db.connection() as conn:
-                res = conn.execute(f"select \"passport_id\" from \"Customer\";").fetchall()
+                res = conn.execute(select([customer_table.c.passport_id])).fetchall()
         except Exception:
             self.errors.append("Something went wrong")
         self.passport_ids = sorted([id_[0] for id_ in res])
@@ -74,7 +78,7 @@ class GetCardIdsForm:
     def get(self, db: Database = Provide[Application.datasources.postgres]):
         try:
             with db.connection() as conn:
-                res = conn.execute(f"select * from get_card_ids;").fetchall()
+                res = conn.execute(select([card_ids_view])).fetchall()
         except Exception:
             self.errors.append("Something went wrong")
         self.card_ids = sorted([id_[0] for id_ in res])
@@ -88,6 +92,8 @@ class CreatDealForm:
         self.msg: list = []
         self.passport_id: Optional[str] = None
         self.passport_id_from_list: Optional[str] = None
+        self.card_id: Optional[str] = None
+        self.card_id_from_list: Optional[str] = None
         self.customer_data: Optional[dict[str, Any]] = None
         self.daily_currency_rate_view: dict[str, Any] = {}
 
@@ -96,21 +102,31 @@ class CreatDealForm:
             form = await self.request.form()
             self.passport_id = form.get("passport_id")
             self.passport_id_from_list = form.get("passport_id_from_list")
+            self.card_id = form.get("card_id")
+            self.card_id_from_list = form.get("card_id_from_list")
         except Exception:
             self.errors.append("Added wrong data")
 
     @inject
     def get(self, db: Database = Provide[Application.datasources.postgres]):
         passport_id = self.passport_id or self.passport_id_from_list
+        card_id = self.card_id or self.card_id_from_list
         try:
             with db.connection() as conn:
-                byn_data = dict(conn.execute(f"select * from \"Currency\" where \"id\" = 1;").fetchone())
+                byn_data = dict(conn.execute(select([byn_currency_view])).fetchone())
                 self.daily_currency_rate_view.update({byn_data["code"]: byn_data})
                 [
                     self.daily_currency_rate_view.update({d.code: dict(d)})
-                    for d in conn.execute("select * from \"daily_currency_rate_view\"").fetchall()
+                    for d in conn.execute(select([daily_currency_rate_view])).fetchall()
                 ]
-                res = conn.execute(f"select * from \"Customer\" where \"passport_id\" = '{passport_id}' ;").fetchone()
+                if passport_id:
+                    res = conn.execute(
+                        select([customer_table]).where(customer_table.c.passport_id == passport_id)
+                    ).fetchone()
+                if card_id:
+                    res = conn.execute(
+                        select([customer_table]).where(customer_table.c.bank_card_id == card_id)
+                    ).fetchone()
                 self.customer_data = dict(res) if res else None
                 if not self.customer_data:
                     self.errors.append(f"There isn't such client")
@@ -137,8 +153,6 @@ class SaveDealForm:
             self.errors.append("Added wrong data")
 
     def validate(self) -> None:
-        import ipdb;
-        ipdb.set_trace()
         if not self.errors:
             if self.currency_in_id == self.currency_out_id:
                 self.errors.append("The same currencies for sale and purchasing")
@@ -150,17 +164,28 @@ class SaveDealForm:
         try:
             with db.connection() as conn:
                 if not self.errors:
-                    conn.execute(
-                        f"call \"add_deal\"({self.customer_id}, {self.user_id} ,{self.currency_in_id}, {self.currency_out_id}, {self.currency_in_count}::money)")
+                    self.deal_id = conn.execute(
+                        func.public.add_deal(
+                            self.customer_id, self.user_id, self.currency_in_id, self.currency_out_id, self.currency_in_count
+                        )
+                    ).fetchone()[0]
                     self.msg.append("Deal created")
-                byn_data = dict(conn.execute(f"select * from \"Currency\" where \"id\" = 1;").fetchone())
+                byn_data = dict(conn.execute(select([byn_currency_view])).fetchone())
                 self.daily_currency_rate_view.update({byn_data["code"]: byn_data})
                 [
                     self.daily_currency_rate_view.update({d.code: dict(d)})
-                    for d in conn.execute("select * from \"daily_currency_rate_view\"").fetchall()
+                    for d in conn.execute(select([daily_currency_rate_view])).fetchall()
                 ]
                 self.customer_data = dict(
-                    conn.execute(f"select * from \"Customer\" where \"id\" = '{self.customer_id}' ;").fetchone()
+                    conn.execute(select([customer_table]).where(customer_table.c.id == self.customer_id)).fetchone()
                 )
-        except Exception:
+        except Exception as err:
             self.errors.append("Something went wrong")
+            self.errors.append(err.orig.diag.message_primary)
+
+    def get_deal_data(self, db: Database = Provide[Application.datasources.postgres]):
+        with db.connection() as conn:
+            self.__dict__.update(
+                dict(conn.execute(select([deal_data_view]).where(deal_data_view.c.deal_id == self.deal_id)).fetchone())
+            )
+            self.__dict__["deal_time"] = self.__dict__["deal_time"].strftime("%H:%M:%S")

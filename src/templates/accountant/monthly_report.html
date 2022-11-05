@@ -5,32 +5,62 @@
 {% endblock %}
 
 {% block content %}
-  <section class="vh-100 gradient-custom-accountant">
-    <div class="container py-5 h-100">
+  <section>
+    <div class="container py-5">
       <div class="row d-flex-md justify-content-center align-items-center h-25">
-        <div class="row g-5">
-          {% if tables %}
-            <div class="col-sm">
-              <span class="input-group-text" id="basic-addon1">{{ tables[0][4] }}</span>
-            </div>
-          {% endif %}
-        </div>
 
+        <h6>Deal report</h6>
         <table class="table">
           <tr>
-            <th>Currency</th>
-            <th>Purchase</th>
-            <th>Sale</th>
+            <th>User name</th>
+            <th>Level</th>
+            <th>Role</th>
+            <th>Deal count</th>
           </tr>
-          {% for row in tables %}
+          {% for d in deal_data %}
             <tr>
-              <td>{{ row[0] }}</td>
-              <td>{{ row[1] }}</td>
-              <td>{{ row[2] }}</td>
+              <td>{{ d.name }}</td>
+              <td>{{ d.level }}</td>
+              <td>{{ d.role }}</td>
+              <td>{{ d.deal_count }}</td>
             </tr>
           {% endfor %}
         </table>
 
+        <h6>Currency report</h6>
+        <table class="table">
+          <tr>
+            <th>Currency code</th>
+            <th>Sold amount</th>
+            <th>% of sell deals</th>
+            <th>Bought amount</th>
+            <th>% of buy deals</th>
+          </tr>
+          {% for c in currency_data %}
+            <tr>
+              <td>{{ c["code"] }}</td>
+              <td>{{ c["sold_amount"] }}</td>
+              <td>{{ c["sell_percent"] }}</td>
+              <td>{{ c["bought_amount"] }}</td>
+              <td>{{ c["buy_percent"] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+
+
+      </div>
+    </div>
+
+    <div class="container">
+      <h6>Created by:</h6>
+      <div class="row">
+        <div class="col">
+          <h6>{{ role }}</h6>
+        </div>
+        <div class="col">
+          <h6>{{ user }}</h6>
+        </div>
+        <h6>{{ date }}</h6>
       </div>
     </div>
   </section>

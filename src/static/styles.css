@@ -1,4 +1,4 @@
-.gradient-custom-accountant {
+.gradient-custom-manager {
     /* fallback for old browsers */
     background: #e2d0f6;
 
@@ -31,7 +31,19 @@
     background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(250, 255, 204))
 }
 
-.bg-dark-accountant {
+.gradient-custom-accountant {
+    /* fallback for old browsers */
+    background: #806086;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom, rgb(255, 255, 255), rgb(201, 255, 203));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(201, 255, 203))
+}
+
+
+.bg-dark-manager {
     background: #9097dc;
 }
 
@@ -39,11 +51,15 @@
     background: #d6fddb;
 }
 
+.bg-dark-accountant {
+    background: #fdf0bf;
+}
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-    background: #fff7ff;
+    background: #ffffff;
 }
 
 td, th {
@@ -53,5 +69,5 @@ td, th {
 }
 
 tr:nth-child(even) {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(220, 220, 220);
 }

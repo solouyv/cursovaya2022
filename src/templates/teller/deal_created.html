@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Deal created</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-teller">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-teller text-white" style="border-radius: 0.5rem; width: 70rem;">
+          <div class="card-body p-4 text-center">
+
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <form method="post" action="/teller/add-client">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Date</span>
+                          <input type="text" class="form-control" name="teller_last_name" value="{{ deal_date }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Time</span>
+                          <input type="text" class="form-control" name="teller_last_name" value="{{ deal_time }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Client id</span>
+                          <input type="text" class="form-control" name="customer_id" value="{{ customer_id }}"
+                                 aria-label="" required>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">First name</span>
+                          <input type="text" class="form-control" name="customer_first_name" value="{{ customer_first_name }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Last name</span>
+                          <input type="text" class="form-control" name="customer_last_name" value="{{ customer_last_name }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Teller id</span>
+                          <input type="text" class="form-control" name="teller_id" value="{{ teller_id }}"
+                                 aria-label="" required>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">First name</span>
+                          <input type="text" class="form-control" name="teller_first_name" value="{{ teller_first_name }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Last name</span>
+                          <input type="text" class="form-control" name="teller_last_name" value="{{ teller_last_name }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Currency for purchasing</span>
+                          <input type="text" class="form-control" name="currency_in_code" value="{{ currency_in_code }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Amount</span>
+                          <input type="text" class="form-control" name="currency_in_count" value="{{ currency_in_count }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Currency for sale</span>
+                          <input type="text" class="form-control" name="currency_out_code" value="{{ currency_out_code }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="row-auto">
+
+                        <div class="input-group mb-4">
+                          <span class="input-group-text" id="basic-addon1">Amount</span>
+                          <input type="text" class="form-control" name="currency_out_count" value="{{ currency_out_count }}"
+                                 aria-label="">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

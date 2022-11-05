@@ -21,7 +21,7 @@
 
                 <div class="input-group mb-4">
                   <span class="input-group-text" id="basic-addon1">Choose from list</span>
-                  <select class="form-select" name="passport_id_from_list" aria-label="">
+                  <select class="form-select" name="card_id_from_list" aria-label="">
                     {% for id in card_ids%}
                       <option>{{ id }}</option>
                     {% endfor %}
@@ -30,7 +30,7 @@
 
                 <div class="input-group mb-4">
                   <span class="input-group-text" id="basic-addon1">Input bank card id</span>
-                  <input type="text" class="form-control" name="passport_id" aria-label="">
+                  <input type="text" class="form-control" name="card_id" aria-label="">
                 </div>
 
                 <div class="container">
@@ -40,11 +40,6 @@
                         <button type="submit" formmethod="post" formaction="/teller/creat-deal" class="btn btn-primary mb-3"
                                 style="width: 13rem">Create deal
                         </button>
-                      </div>
-                    </div>
-                    <div class="col-sm">
-                      <div class="row-auto">
-                        <button type="submit" class="btn btn-primary mb-3" style="width: 13rem">Update user</button>
                       </div>
                     </div>
                   </div>

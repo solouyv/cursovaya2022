@@ -1,43 +1,52 @@
-from typing import Any
-from typing import Optional
+from uuid import UUID, uuid4
 
-from fastapi import Request
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
-from exchange.containers import Application
-from exchange.datasource import Database
+from exchange.api.auth.forms import LoginForm
+from exchange.api.auth.session import SessionData, backend, cookie, verifier
+
+router = APIRouter(tags=["Exchange"])
+templates = Jinja2Templates(directory="templates")
 
 
-class LoginForm:
-    def __init__(self, request: Request):
-        self.request: Request = request
-        self.errors: list = []
-        self.username: Optional[str] = None
-        self.password: Optional[str] = None
-        self.user_dict: Optional[dict[str, Any]] = None
+@router.get("/", response_class=HTMLResponse)
+@inject
+def start(
+    request: Request,
+):
+    return templates.TemplateResponse("main.html", {"request": request})
 
-    async def load_data(self):
-        form = await self.request.form()
-        self.username = form.get("email")
-        self.password = form.get("password")
 
-    async def is_valid(self):
-        if not self.username or not (self.username.__contains__("@")):
-            self.errors.append("Email is required")
-        if not self.password or not self.is_valid_password():
-            self.errors.append("A valid password is required")
-        if not self.errors:
-            return True
-        return False
+@router.post("/", response_class=HTMLResponse)
+async def login(request: Request):
+    form = LoginForm(request)
+    await form.load_data()
+    if await form.is_valid():
+        session = uuid4()
+        data = SessionData(user=form.user_dict)
+        await backend.create(session, data)
+        response_dict = {"request": request}
+        response_dict.update(form.user_dict)
+        response = templates.TemplateResponse("main.html", response_dict)
+        cookie.attach_to_response(response, session)
+        return response
+    return templates.TemplateResponse("main.html", {"request": request, "errors": form.errors})
 
-    @inject
-    def is_valid_password(
-        self,
-        db: Database = Provide[Application.datasources.postgres]
-    ):
-        with db.connection() as conn:
-            res = conn.execute(f"SELECT * FROM \"user_view_with_roles\" WHERE email = '{self.username}'").fetchone()
-        if res.password == self.password:
-            self.user_dict = dict(res)
-            return True
-        return False
+
+@router.get("/main", response_class=HTMLResponse, dependencies=[Depends(cookie)])
+@inject
+def start(request: Request, session_data: SessionData = Depends(verifier)):
+    response_dict = {"request": request, "errors": []}
+    response_dict.update(session_data.user)
+    return templates.TemplateResponse("main.html", response_dict)
+
+
+@router.delete("/")
+async def del_session(request: Request, session_id: UUID = Depends(cookie)):
+    response = templates.TemplateResponse("main.html", {"request": request, "user": None})
+    await backend.delete(session_id)
+    cookie.delete_from_response(response)
+    return response
