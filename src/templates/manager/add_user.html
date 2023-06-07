@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Add user</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-manager">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-manager text-white" style="border-radius: 0.5rem; width: 40rem;">
+          <div class="card-body p-4 text-center">
+
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <form method="post" action="/manager/add-user">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">First name</span>
+                  <input type="text" class="form-control" name="first_name" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">Last name</span>
+                  <input type="text" class="form-control" name="last_name" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">Email</span>
+                  <input type="email" class="form-control" name="email" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">Password</span>
+                  <input type="text" class="form-control" name="password" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">Role</span>
+                  <select class="form-select" name="role_id" aria-label="" required>
+                    {% for r in roles %}
+                      <option value="{{ r.id }}">{{ r.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1" style="width: 6rem">Level</span>
+                  <select class="form-select" name="salary_level" aria-label="" required>
+                    {% for s in salaries %}
+                      <option value="{{ s.level  }}">{{ s.level }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="input-group mb-4 text-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="salary_increase" id="flexCheckChecked" checked>
+                    <label class="form-check-label text-dark" for="flexCheckChecked">Has salary increase</label>
+                  </div>
+                </div>
+
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3" style="width: 10rem">Add user</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

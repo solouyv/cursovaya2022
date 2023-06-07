@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: ./fixtures/role.yaml
+  - include:
+      file: ./fixtures/salary.yaml
+  - include:
+      file: ./fixtures/user.yaml
+  - include:
+      file: ./fixtures/currency.yaml
+  - include:
+      file: ./fixtures/customer.yaml
+  - include:
+      file: ./fixtures/deal.yaml

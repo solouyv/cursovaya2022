@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Monthly compensation</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100">
+    <div class="container py-5">
+      <div class="row d-flex-md justify-content-center align-items-center h-25">
+
+        <table class="table">
+          <tr>
+            <th>User id</th>
+            <th>User name</th>
+            <th>Role</th>
+            <th>Level</th>
+            <th>Compensation</th>
+            <th>Increase '%'</th>
+            <th>Full compensation</th>
+          </tr>
+
+          {% for d in data %}
+            <tr>
+              <td>{{ d.id }}</td>
+              <td>{{ d.name }}</td>
+              <td>{{ d.role }}</td>
+              <td>{{ d.level }}</td>
+              <td>{{ d.salary }}</td>
+              <td>{{ d.increase }}</td>
+              <td>{{ d.compensation }}</td>
+            </tr>
+          {% endfor %}
+
+        </table>
+
+      </div>
+    </div>
+
+    <div class="container">
+      <h6>Created by:</h6>
+      <div class="row">
+        <div class="col">
+          <h6>{{ role }}</h6>
+        </div>
+        <div class="col">
+          <h6>{{ user }}</h6>
+        </div>
+        <h6>{{ date }}</h6>
+      </div>
+    </div>
+
+  </section>
+{% endblock %}

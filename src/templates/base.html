@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/styles.css">
+  {% block title %}{% endblock %}
+</head>
+<body>
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ceecfc;">
+    <div class="container-fluid">
+      {% if role %}
+        <a class="navbar-brand" href="/main">Exchanger</a>
+      {% endif %}
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          {% if role and role in ["teller", "manager"] %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                For tellers
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/teller/add-client">Add client</a></li>
+                <li><a class="dropdown-item" href="/teller/get-by-passport-id">Get client by passport id</a></li>
+                <li><a class="dropdown-item" href="/teller/get-by-card-id">Get client by bank card id</a></li>
+              </ul>
+            </li>
+          {% endif %}
+
+          {% if role and role in ["accountant", "manager"] %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                For accountant
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/accountant/add-currency-rate">Add currency rate</a></li>
+                <li><a class="dropdown-item" href="/accountant/add-data-to-office-table">Show currency rates</a></li>
+                <li><a class="dropdown-item" href="/accountant/monthly-report">Monthly Report</a></li>
+                <li><a class="dropdown-item" href="/accountant/get-monthly-compensation">Monthly Compensation</a></li>
+              </ul>
+            </li>
+          {% endif %}
+
+          {% if role and role in ["manager"] %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                For managers
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/manager/add-cash-amount">Add daily cash amount</a></li>
+                <li><a class="dropdown-item" href="/manager/get-cash-amount">Get daily cash amount</a></li>
+                <li><a class="dropdown-item" href="/manager/users">Users</a></li>
+                <li><a class="dropdown-item" href="/manager/add-user">Add user</a></li>
+              </ul>
+            </li>
+          {% endif %}
+
+        </ul>
+
+        {% if user %}
+          <form method="delete" action="/">
+            <div class="d-flex">
+              <h4>{{ user }}</h4>
+              <h4 style="width: 1em"></h4>
+              <button class="btn btn-primary btn-sm btn-block" type="submit">LogOut</button>
+            </div>
+          </form>
+        {% else %}
+          <form method="post" action="/">
+            <div class="d-flex">
+              <label for="typeEmailX-2"></label>
+              <input type="email" id="typeEmailX-2" name="email" placeholder="Email" class="form-control"/>
+              <label for="typePasswordX-2"></label>
+              <input type="password" id="typePasswordX-2" name="password" placeholder="Password" class="form-control"/>
+              <h4 style="width: 1em"></h4>
+              <button class="btn btn-primary btn-sm btn-block" type="submit">LogIn</button>
+            </div>
+          </form>
+        {% endif %}
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="text-danger font-weight-bold text-center">
+    {% for error in errors %}
+      <h5>{{ error }}</h5>
+    {% endfor %}
+  </div>
+
+  {% block header %}{% endblock %}
+</header>
+
+{% block content %}{% endblock %}
+
+<footer>
+  {% block footer %}{% endblock %}
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

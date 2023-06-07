@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Office table</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-accountant">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-accountant text-white" style="border-radius: 0.5rem; width: 70rem;">
+          <div class="card-body p-4 text-center" >
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <div class="row g-5">
+                <div class="col-sm-8">
+                </div>
+                <div class="col-sm">
+                </div>
+                {% if tables %}
+                  <div class="col-sm">
+                    <span class="input-group-text" id="basic-addon1">{{ tables[0][4] }}</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <table class="table table-secondary table-striped">
+                <tr>
+                  <th>Currency</th>
+                  <th>Purchase</th>
+                  <th>Sale</th>
+                </tr>
+                {% for row in tables %}
+                  <tr>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+

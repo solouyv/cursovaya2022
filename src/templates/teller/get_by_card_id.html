@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Get by bank card id</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-teller">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-teller text-white" style="border-radius: 0.5rem; width: 50rem;">
+          <div class="card-body p-4 text-center">
+            <div class="mb-md-1 mt-md-3 pb-1">
+              <form method="post" action="/teller/add-client">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">Choose from list</span>
+                  <select class="form-select" name="card_id_from_list" aria-label="">
+                    {% for id in card_ids%}
+                      <option>{{ id }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">Input bank card id</span>
+                  <input type="text" class="form-control" name="card_id" aria-label="">
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="row-auto">
+                        <button type="submit" formmethod="post" formaction="/teller/creat-deal" class="btn btn-primary mb-3"
+                                style="width: 13rem">Create deal
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

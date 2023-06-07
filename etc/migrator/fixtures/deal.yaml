@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Raman Salauyou
+      runOnChange: true
+      validCheckSum: any
+      changes:
+        - loadUpdateData:
+            file: ./fixtures/data/deal.csv
+            separator: ","
+            encoding: UTF-8
+            tableName: Deal
+            primaryKey: "id"

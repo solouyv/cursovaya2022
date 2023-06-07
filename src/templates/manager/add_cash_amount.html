@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Add daily cash amount</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-manager">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-manager text-white" style="border-radius: 0.5rem; width: 30rem;">
+          <div class="card-body p-4 text-center">
+
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <form method="post" action="/manager/add-cash-amount">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">USD</span>
+                  <input type="text" class="form-control" name="usd" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">EUR</span>
+                  <input type="text" class="form-control" name="eur" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">GBP</span>
+                  <input type="text" class="form-control" name="gbp" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">JPY</span>
+                  <input type="text" class="form-control" name="jpy" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">CHF</span>
+                  <input type="text" class="form-control" name="chf" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">BYN</span>
+                  <input type="text" class="form-control" name="byn" placeholder="Amount in"
+                         aria-label="" required>
+                </div>
+
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-1" style="width: 10rem">Add</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Add client</title>
+{% endblock %}
+
+{% block content %}
+  <section class="vh-100 gradient-custom-teller">
+    <div class="container py-5 h-100">
+      <div class="row d-flex-md justify-content-center align-items-center h-75">
+        <div class="card bg-dark-teller text-white" style="border-radius: 0.5rem; width: 50rem;">
+          <div class="card-body p-4 text-center">
+
+            <div class="mb-md-1 mt-md-3 pb-1">
+
+              <form method="post" action="/teller/add-client">
+
+                <div class="text-success font-weight-bold text-center">
+                  {% for message in msg %}
+                    <h5>{{ message }}</h5>
+                  {% endfor %}
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">First name</span>
+                  <input type="text" class="form-control" name="first_name" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">Last name</span>
+                  <input type="text" class="form-control" name="last_name" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4">
+                  <span class="input-group-text" id="basic-addon1">Passport id</span>
+                  <input type="text" class="form-control" name="passport_id" aria-label="" required>
+                </div>
+
+                <div class="input-group mb-4 text-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="bank_card" id="flexCheckChecked" checked>
+                    <label class="form-check-label text-dark" for="flexCheckChecked">Add bank card</label>
+                  </div>
+                </div>
+
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3" style="width: 10rem">Add</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,14 @@
+version: "3.4"
+
+services:
+  api:
+    image: "exchange-api"
+    container_name: exchange-api
+
+  migrator:
+    image: "exchange-migrator"
+    container_name: exchange-migrator
+
+  postgres:
+    image: "postgres:12.5-alpine"
+    container_name: postgres
